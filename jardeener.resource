@@ -3,7 +3,7 @@ Documentation    Jardeen test case resources.
 Library    SeleniumLibrary
 
 *** Variables ***
-${url}    http://localhost:8083/index.html
+${url}    http://localhost:8084/index.html
 ${browser}    firefox
 &{jddAdmin}    
 ...    user=admin
@@ -47,8 +47,8 @@ ${browser}    firefox
 ...    name=Jardin d'Eden  
 ...    parcelle=2
 ...    peopleNb=3    ##min.1 max.20    
-...    start=2026-08-20 12:00 
-...    end=2026-08-21 10:00
+...    start=01-01-2027T12:00
+...    end=02-01-2027T10:00
 ...    descri=C'est de la fumisterie 
 
 *** Keywords ***
@@ -129,5 +129,5 @@ Create Task
     Input Text    id=startTimeInput    ${start}
     Input Text    id=endTimeInput    ${end}
     Input Text    id=descriptionInput    ${descri}
-    Sleep    2
+    Sleep    5
     Click Button    id=addTaskButton
