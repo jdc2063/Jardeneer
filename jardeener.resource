@@ -14,34 +14,22 @@ ${browser}    firefox
 ...    user=azertyui    
 ...    passWord=azertyui
 &{jddCreateUser1}    
-...    login=azertyui    
-...    passWord=azertyui    
-...    firstName=James    
-...    lastName=Lesbzhez    
-...    genre=MALE    
-...    birthDate=2000-01-01    
-...    adresse=12 azertyui    
-...    codePostal=75057    
-...    ville=Paris   
-...    tel=1327984560    
+...    login=azertyui         passWord=azertyui    
+...    firstName=James        lastName=Lesbzhez    
+...    genre=MALE             birthDate=2000-01-01    
+...    adresse=12 azertyui    codePostal=75057    
+...    ville=Paris            tel=1327984560    
 ...    email=james@bzehz.sus    
-...    lvl=BEGINNER    
-...    role=JARDEENER
+...    lvl=BEGINNER           role=JARDEENER
 
 &{jddCreateUser2}    
-...    login=poiuytre  
-...    passWord=poiuytre  
-...    firstName=Denis    
-...    lastName=Osu 
-...    genre=FEMALE    
-...    birthDate=2000-01-01    
-...    adresse=12 azertyui    
-...    codePostal=75057    
-...    ville=Paris   
-...    tel=1327984560    
+...    login=poiuytre         passWord=poiuytre  
+...    firstName=Denis        lastName=Osu 
+...    genre=FEMALE           birthDate=2000-01-01    
+...    adresse=12 azertyui    codePostal=75057    
+...    ville=Paris            tel=1327984560    
 ...    email=Denie@osu.sus    
-...    lvl=CONFIRMED    
-...    role=OWNER
+...    lvl=CONFIRMED          role=OWNER
 
 &{jddCreatTask1}    
 ...    name=Jardin d'Eden  
@@ -131,3 +119,106 @@ Create Task
     Input Text    id=descriptionInput    ${descri}
     Sleep    5
     Click Button    id=addTaskButton
+
+Create a parcelle
+    [Arguments]    ${name}    ${address}    ${cp}    ${city}    ${largeur}    ${longueur}
+    Click Element    xpath=//*[@id="navigation"]/nav/div/ul/li[4]/a
+    Wait Until Element Is Visible    id=addPlotButton
+    Input Text    id=nameInput    ${name}
+    Input Text    id=addressInput    ${address}
+    Input Text    id=zipCodeInput    ${cp}
+    Sleep    2
+    Input Text    id=cityInput    ${city}
+    Input Text    id=widthInput    ${largeur}
+    Input Text    id=lengthInput    ${longueur}
+    Sleep    2
+    Click Button    id=addPlotButton
+    Sleep    2
+
+Check parcelle
+    [Arguments]    ${name}
+    # Aller sur la page Parcelle
+    Click Element    //span[.="Parcelles"]/..
+    Sleep    1
+    Wait Until Element Is Visible    //h2[.='Parcelles à valider...']
+    Wait Until Element Is Enabled    //div[@id='plotsToValidate']
+    
+    Element Should Be Visible    //h3[.="${name}"]
+    Element Should Be Visible    //h3[.="${name}"]/../..
+    Element Attribute Value Should Be    //h3[.="${name}"]/../../../..    id    plotsToValidate
+    Element Should Be Visible    //div[@id='plotsToValidate']/div[1]/div
+    Element Should Be Visible    //div[@id='plotsToValidate']/div[1]/div/form
+    Element Should Be Visible    //div[@id='plotsToValidate']/div[1]/div/form/h3
+    Element Should Be Visible    //h3[.="${name}"]/../input[@name='deleteNonValidatedPlotButton']
+
+Delete parcelle
+    [Arguments]    ${name}
+    # Compter le nombre de parcelle affiché à valider puis on vérifie
+    ${length}    Get Element Count    //div[@id='plotsToValidate']/div
+    Click Button    //h3[.="${name}"]/../input[@name='deleteNonValidatedPlotButton']
+    Sleep    1
+    ${length2}    Get Element Count    //div[@id='plotsToValidate']/div
+    Should Be True    ${length}==${length2}+1
+    
+    Click Element    //span[.="Parcelles"]/..
+    Sleep    1
+    ${length2}    Get Element Count    //div[@id='plotsToValidate']/div
+    Should Be True    ${length}==${length2}+1
+    Element Should not Be Visible    //h3[.="${name}"]
+
+Check and delete parcelle
+    [Arguments]    ${name}
+    Check parcelle    ${name}
+    Delete Parcelle    ${name}
+
+List Suite Setup
+    Open Browser To Page
+    #Create account owner
+    Create an account
+    ...    ${jddCreateUser1}[login]
+    ...    ${jddCreateUser1}[passWord]
+    ...    ${jddCreateUser1}[firstName]
+    ...    ${jddCreateUser1}[lastName]
+    ...    ${jddCreateUser1}[genre]
+    ...    ${jddCreateUser1}[birthDate]
+    ...    ${jddCreateUser1}[adresse]
+    ...    ${jddCreateUser1}[codePostal]
+    ...    ${jddCreateUser1}[ville]
+    ...    ${jddCreateUser1}[tel]
+    ...    ${jddCreateUser1}[email]
+    ...    ${jddCreateUser1}[lvl]
+    ...    ${jddCreateUser1}[role]
+
+    Sleep   1
+
+    #Create account jardeener
+    Create an account    
+    ...    ${jddCreateUser2}[login]
+    ...    ${jddCreateUser2}[passWord]
+    ...    ${jddCreateUser2}[firstName]
+    ...    ${jddCreateUser2}[lastName]
+    ...    ${jddCreateUser2}[genre]
+    ...    ${jddCreateUser2}[birthDate]
+    ...    ${jddCreateUser2}[adresse]
+    ...    ${jddCreateUser2}[codePostal]
+    ...    ${jddCreateUser2}[ville]
+    ...    ${jddCreateUser2}[tel]
+    ...    ${jddCreateUser2}[email]
+    ...    ${jddCreateUser2}[lvl]
+    ...    ${jddCreateUser2}[role]
+
+    Sleep    1
+    Connect As Admin
+    Accept An Account    ${jddCreateUser1}[email]
+    Accept An Account    ${jddCreateUser2}[email]
+
+    Disconnect
+
+Clear created account
+    Open Browser To Page
+    Connect As Admin
+    # On supprime le compte créé
+    Delete An Account   ${jddCreateUser1}[email]
+    Delete An Account   ${jddCreateUser2}[email]
+    Close Browser
+    
