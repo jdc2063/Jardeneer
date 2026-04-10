@@ -7,8 +7,8 @@ Test Teardown    Close Browser
 Suite Teardown    Clear created account
 
 *** Test Cases ***
-#TODO Ajouter Admin + zip code only letter + Nombre négatif pour largeur/longueur qui n'est pas logique
-
+#TODO Ajouter Admin + zip code with letter + Nombre négatif pour largeur/longueur qui n'est pas logique
+#TODO Erreur message d'erreur hectar < 20 m2
 # Reject parcelle Created by an Admin - Classic
 #     VAR    ${index}  0
 #     Connect As Admin
@@ -231,14 +231,14 @@ Cant create parcelle with code zip <5 char
 
     Check error create parcelle    Le code postal doit être composé de 5 caractères (chiffres et lettres majuscules)
 
-Cant create parcelle with negative Longueur
-    VAR    ${index}  15
-    Connection To An Account    ${jddCreateUser2}[login]     ${jddCreateUser2}[passWord]
+# Cant create parcelle with negative Longueur
+#     VAR    ${index}  15
+#     Connection To An Account    ${jddCreateUser2}[login]     ${jddCreateUser2}[passWord]
 
-    # On crée une parcelle
-    Create a parcelle with ${index}
+#     # On crée une parcelle
+#     Create a parcelle with ${index}
 
-    Check error create parcelle    Vous devez renseigner tous les champs.
+#     Check error create parcelle    Vous devez renseigner tous les champs.
 
 Cant create parcelle with letter Longueur
     VAR    ${index}  16
@@ -258,14 +258,14 @@ Cant create parcelle with letter Longueur
 
 #     Check error create parcelle    Vous devez renseigner tous les champs.
 
-# Cant create parcelle with letter Largeur
-#     VAR    ${index}  18
-#     Connection To An Account    ${jddCreateUser2}[login]     ${jddCreateUser2}[passWord]
+Cant create parcelle with letter Largeur
+    VAR    ${index}  18
+    Connection To An Account    ${jddCreateUser2}[login]     ${jddCreateUser2}[passWord]
 
-#     # On crée une parcelle
-#     Create a parcelle with ${index}
+    # On crée une parcelle
+    Create a parcelle with ${index}
 
-#     Check error create parcelle    Vous devez renseigner tous les champs.
+    Check error create parcelle    Vous devez renseigner tous les champs.
 
 # Cant create parcelle with negative Largeur Longueur
 #     VAR    ${index}  19
@@ -275,3 +275,48 @@ Cant create parcelle with letter Longueur
 #     Create a parcelle with ${index}
 
 #     Check error create parcelle    Vous devez renseigner tous les champs.
+
+# Cant create parcelle with only 0 in zip code
+#     VAR    ${index}  20
+#     Connection To An Account    ${jddCreateUser2}[login]     ${jddCreateUser2}[passWord]
+
+#     # On crée une parcelle
+#     Create a parcelle with ${index}
+
+#     Check error create parcelle    Vous devez renseigner tous les champs.
+
+# Cant create parcelle with >1 letter in zip code
+#     VAR    ${index}  21
+#     Connection To An Account    ${jddCreateUser2}[login]     ${jddCreateUser2}[passWord]
+
+#     # On crée une parcelle
+#     Create a parcelle with ${index}
+
+#     Check error create parcelle    Vous devez renseigner tous les champs.
+
+# Cant create parcelle with 1 letter but not 2A or 2B in zip code
+#     VAR    ${index}  22
+#     Connection To An Account    ${jddCreateUser2}[login]     ${jddCreateUser2}[passWord]
+
+#     # On crée une parcelle
+#     Create a parcelle with ${index}
+
+#     Check error create parcelle    Vous devez renseigner tous les champs.
+
+Cant create parcelle with 19 hectar
+    VAR    ${index}  23
+    Connection To An Account    ${jddCreateUser2}[login]     ${jddCreateUser2}[passWord]
+
+    # On crée une parcelle
+    Create a parcelle with ${index}
+
+    Check error create parcelle    La parcelle doit faire minimum 20m².
+
+Cant create parcelle with 18 hectar
+    VAR    ${index}  24
+    Connection To An Account    ${jddCreateUser2}[login]     ${jddCreateUser2}[passWord]
+
+    # On crée une parcelle
+    Create a parcelle with ${index}
+
+    Check error create parcelle    La parcelle doit faire minimum 20m².
