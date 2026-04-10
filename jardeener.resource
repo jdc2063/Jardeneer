@@ -107,6 +107,7 @@ Connect As Admin
     Input Text    id=passwordInput    ${jddAdmin}[psd]
     Sleep    2
     Click Button    id=connectionButton
+    Wait Until Element Is Visible   //a[@onclick='disconnect()']
 
 Disconnect
     Click Element    xpath=//*[@id="navigation"]/nav/div/ul/li[6]/a
@@ -181,7 +182,7 @@ Accepte parcelle
     # Compter le nombre de parcelle affiché à valider puis on vérifie
     ${lengthToValidateBefore}    Get Element Count    //div[@id='plotsToValidate']/div
     ${lengthValidatedBefore}    Get Element Count    //div[@id='plots']/div
-    Click Button    //h3[.="${name}"]/../input[@name='validatePlotButton']
+    Click Button    //input[@id='nameInput'][@value="${name}"]/../../input[@name='validatePlotButton']
     Sleep    1
     ${lengthToValidateAfter}    Get Element Count    //div[@id='plotsToValidate']/div
     ${lengthValidatedAfter}    Get Element Count    //div[@id='plots']/div
@@ -256,7 +257,6 @@ Clear created account
     # On supprime le compte créé
     Delete An Account   ${jddCreateUser1}[email]
     Delete An Account   ${jddCreateUser2}[email]
-    Close Browser
     
 Read File parcelle
     Open Excel Document    parcelle.xlsx    docid
